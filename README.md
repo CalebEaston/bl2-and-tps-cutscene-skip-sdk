@@ -1,6 +1,6 @@
 # Cutscene Skip (BL2 & TPS)
 
-> This mod was made with the help of AI (Claude Code). The code and docs were written with it,
+> This mod was made with AI (Claude Code). The code and docs were written with it,
 > under my direction.
 
 An SDK mod for Borderlands 2 and Borderlands: The Pre-Sequel that skips cutscenes. Turn on one
