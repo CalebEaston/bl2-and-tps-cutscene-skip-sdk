@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyd
+*.so
+.venv/
+
+# Packaged mod and SDK downloads
+*.sdkmod
+*.zip
+
+# Defensive: the SDK keeps settings in <game>/sdk_mods/settings/, but never commit one if it appears
+settings/
+
+# Editors
+.vs/
+.vscode/
+.idea/
+.nvim.lua
+
+# Tool caches
+.ruff_cache/

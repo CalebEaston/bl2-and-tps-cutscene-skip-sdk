@@ -1,0 +1,42 @@
+# Publishes cutscene_skip.sdkmod as a GitHub Release whenever a v* tag is pushed.
+#
+# To cut a release:
+#   1. Bump `version` in src/cutscene_skip/pyproject.toml and add a changelog entry to
+#      src/cutscene_skip/Readme.md.
+#   2. git tag v<version> && git push origin v<version>
+
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check that the tag matches the mod version
+        run: |
+          version="$(python3 -c 'import tomllib; print(tomllib.load(open("src/cutscene_skip/pyproject.toml", "rb"))["project"]["version"])')"
+          tag="${GITHUB_REF_NAME#v}"
+          if [ "$version" != "$tag" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match version ${version} in src/cutscene_skip/pyproject.toml" >&2
+            exit 1
+          fi
+
+      - name: Build the .sdkmod
+        # A .sdkmod is a zip whose only top-level folder is named like the file.
+        run: cd src && zip -r ../cutscene_skip.sdkmod cutscene_skip -x '*__pycache__*'
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "$GITHUB_REF_NAME" cutscene_skip.sdkmod
+          --title "Cutscene Skip $GITHUB_REF_NAME"
+          --generate-notes

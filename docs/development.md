@@ -1,0 +1,66 @@
+# Development
+
+Notes for anyone who wants to build on this mod. Players don't need any of this: the
+[README](../README.md) covers installing the released `.sdkmod`.
+
+## Layout
+
+```
+src/cutscene_skip/        the mod itself: __init__.py, pyproject.toml (mod metadata), Readme.md (changelog)
+.willow2-mod-manager/     git submodule pinned to the SDK release the game ships, used for type-checking only
+docs/                     these notes, the SDK and game reference (sdk-notes.md), the plain playtest
+                          checklist (testing.md), the console probes (testing-probes.md), the Nexus text
+pyproject.toml            ruff and pyright configuration, copied from the bl-sdk repos
+.github/workflows/        the release workflow
+```
+
+What players install is `cutscene_skip.sdkmod`, a zip of `src/cutscene_skip/`. Nothing else in
+this repository goes into the game.
+
+## Local checks
+
+```sh
+git submodule update --init .willow2-mod-manager
+git -C .willow2-mod-manager submodule update --init src/mods_base src/keybinds src/console_mod_menu
+python3 -m venv .venv && .venv/bin/pip install ruff        # once
+.venv/bin/ruff check src && .venv/bin/ruff format --check src
+npx --yes pyright src
+```
+
+The SDK embeds Python 3.14 and `mods_base` uses 3.14-only syntax, so use Python 3.14 locally.
+
+## Running it from this checkout
+
+Instead of re-zipping after every edit, point the game at `src/` as an extra mods folder. Create
+`<game>/Binaries/Win32/Plugins/unrealsdk.user.toml`:
+
+```toml
+[mod_manager]
+extra_folders = ['Z:\path\to\bl2-and-tps-cutscene-skip-sdk\src']
+```
+
+(Windows path as the game sees it; under Proton `Z:` is `/`.) In the game console, tilde twice,
+`rlm cutscene_skip` reloads the module after an edit. Errors land in
+`<game>/Binaries/Win32/Plugins/unrealsdk.log`. The playtest plan is [testing.md](testing.md);
+[testing-probes.md](testing-probes.md) adds the console probes.
+
+## Building the .sdkmod by hand
+
+```sh
+cd src && zip -r ../cutscene_skip.sdkmod cutscene_skip -x '*__pycache__*'
+```
+
+## Cutting a release
+
+1. Bump `version` in `src/cutscene_skip/pyproject.toml` (dotted integers only, e.g. `0.2`) and
+   add an entry to `src/cutscene_skip/Readme.md`.
+2. Commit, then `git tag v0.2 && git push origin v0.2`.
+
+The workflow in `.github/workflows/release.yml` checks that the tag matches the version, builds
+the `.sdkmod` and publishes a GitHub Release with it attached and auto-generated notes.
+
+## How it works
+
+See [sdk-notes.md](sdk-notes.md) for what a cutscene is in these games, the hooks used, the
+staged skip, the prior art this borrows from and the open questions, and
+[.claude/CLAUDE.md](../.claude/CLAUDE.md) for the rules the code follows.
