@@ -132,6 +132,20 @@ The mod's source is `src/cutscene_skip/`. Notes on the SDK, how the games run cu
 hooks used, prior art and the dev loop are in [docs/](docs/), starting with
 [docs/development.md](docs/development.md).
 
+## Credits
+
+No code from other mods is included, but this one builds on what they figured out:
+
+- apple1417 and the bl-sdk contributors, for the
+  [PythonSDK](https://github.com/bl-sdk/willow2-mod-manager) this runs on, keybinds included.
+- FromDarkHell's Cutscene Disabler text mods for
+  [Borderlands 2](https://github.com/BLCM/BLCMods/blob/master/Borderlands%202%20mods/FromDarkHell/Quality%20of%20Life/CutsceneDisabler.txt)
+  and [The Pre-Sequel](https://github.com/BLCM/BLCMods/blob/master/Pre%20Sequel%20Mods/FromDarkHell/Quality%20of%20Life/CutsceneDisabler.txt),
+  which showed how the games' level scripts run each cutscene, and that a skip has to let the
+  cutscene's own follow-up steps run.
+- ZooLSmith's [Helios Tracker](https://github.com/ZooLSmith/helios-tracker) research notes, for
+  how the games play full-screen videos and switch the player into cutscene mode.
+
 ## Changelog
 
 See [src/cutscene_skip/Readme.md](src/cutscene_skip/Readme.md).

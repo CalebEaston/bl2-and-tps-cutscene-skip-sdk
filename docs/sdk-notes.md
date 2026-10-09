@@ -231,3 +231,32 @@ scan window.
 - What `bIsSkipped` does, and whether `SetCinematicAutoSkip(True)` is a one-line always-skip.
 - TPS: nothing played yet. Every hook target, field and function above exists there with the same
   signature (checked in the `tps/` stubs).
+
+## Credits and prior art (audited 2026-10-09)
+
+Caleb asked for a Credits section like enemy_item_scaling's. Audit: the only third-party mod code
+read while building v0.1 was MOW531's BL1 Cutscene Skip (`__init__.py`, `maps.py`) and
+helios-tracker's `tools/probes/probe_cutscene.py`. A line-by-line comparison against
+`src/cutscene_skip/__init__.py` found no identical lines and one near-identical one, the bare SDK
+call `ENGINE.GetCurrentWorldInfo()`. So no code was copied or closely adapted; what was taken is
+hook target names, game facts and techniques, none of which carries a licence obligation.
+Player-facing credits are in the README's Credits section and `docs/nexus.md`; this is the full
+list.
+
+| Source | Author | Licence | What it gave this mod |
+|---|---|---|---|
+| PythonSDK: willow2-mod-manager, mods_base, keybinds, unrealsdk, pyunrealsdk | apple1417 and bl-sdk contributors | LGPL-3.0 | the runtime, the API and the keybind dispatch; not bundled in the `.sdkmod` (players install it), so LGPL imposes nothing |
+| Rendered Cutscene Disabler (BL2), TPS Cutscene Disabler | FromDarkHell | none (BLCMods has a disclaimer, no licence grant) | which Kismet nodes each cutscene uses; the lesson that a cutscene's consequences hang off its `Completed` and event outputs; its `bIsSkipped` / `Position` edits suggested the last-frame stage; its blanked `BinkMovieName`s suggested blocking videos. Text mods, nothing copied |
+| Helios Tracker research notes and `probe_cutscene.py` | ZooLSmith | GPL-3.0 | a Bink renders no frames (so the key can't interrupt a video); the `ClientPlayBinkMovie` hook target and `bForceNoSkip`; the cinematic-mode sequence around a video and `bCinematicMode` staying on after a map load; the `find_all("SeqAct_Interp")` + `bIsPlaying` scan idea. No code copied |
+| bl-py-stubs (`gamestubs.zip`) | Justin99x | none found | dev only: every class, field and function name and signature in both games; the BL2/TPS identity checks |
+| BL2-SDK dump | RobChiocchio | none found | dev only: function flags (native, exec, event, server RPC) |
+| FT/BLCMM Explorer object dumps | apocalyptech | BSD-3-Clause | dev only: every `SeqAct_Interp`, `InterpData`, `SeqAct_PlayBinkMovie` and `SeqAct_ToggleCinematicMode` in both games; the `Last Frame` input and the `...WhenJumpToLastFrame` flag counts |
+| Unreal Engine 4 Matinee API docs (`AMatineeActor.bIsSkippable`) | Epic Games | documentation | dev only: what `bIsSkippable` means in the engine Willow's Matinee descends from |
+| Official SDK install guide (bl-sdk.github.io/willow2-mod-db) | bl-sdk contributors | none found | the README install steps are condensed from it (via the enemy_item_scaling README), and say so |
+| bl-sdk repos' ruff/pyright config | apple1417 | GPL-3.0 / LGPL-3.0 | the root `pyproject.toml` lint lists are copied verbatim (via enemy_item_scaling); dev only, never shipped |
+
+Looked at and not used: MOW531's BL1 Cutscene Skip (per-map Kismet rewiring, BL1 only; the
+approach was not taken), BL2Fix (Nexus mod 277; source not public, only its description read),
+ZetaDaemon's Dialog Skipper (dialog only; source not read), the BLCM wiki's Kismet page. If code
+from any GPL source is ever copied in, the mod would have to be GPL-3.0; keep borrowing ideas and
+facts, not code.

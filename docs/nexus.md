@@ -53,11 +53,21 @@ This is an SDK mod, not a BLCMM text mod. If you've never used one:
 
 A step-by-step version with troubleshooting is in the [url=https://github.com/CalebEaston/bl2-and-tps-cutscene-skip-sdk#installation]README on GitHub[/url].
 
+[size=4][b]Credits[/b][/size]
+
+No code from other mods is included, but this one builds on what they figured out:
+
+[list]
+[*]apple1417 and the bl-sdk contributors, for the [url=https://github.com/bl-sdk/willow2-mod-manager]PythonSDK[/url] this runs on, keybinds included.
+[*]FromDarkHell's Cutscene Disabler text mods for [url=https://github.com/BLCM/BLCMods/blob/master/Borderlands%202%20mods/FromDarkHell/Quality%20of%20Life/CutsceneDisabler.txt]Borderlands 2[/url] and [url=https://github.com/BLCM/BLCMods/blob/master/Pre%20Sequel%20Mods/FromDarkHell/Quality%20of%20Life/CutsceneDisabler.txt]The Pre-Sequel[/url], which showed how the games' level scripts run each cutscene, and that a skip has to let the cutscene's own follow-up steps run.
+[*]ZooLSmith's [url=https://github.com/ZooLSmith/helios-tracker]Helios Tracker[/url] research notes, for how the games play full-screen videos and switch the player into cutscene mode.
+[/list]
+
 [size=4][b]Notes[/b][/size]
 
 [list]
 [*]Source code and issue tracker: [url=https://github.com/CalebEaston/bl2-and-tps-cutscene-skip-sdk]GitHub[/url]
-[*]This mod was made with AI (Claude Code), under my direction.
+[*]This mod was made with AI (Claude Code). The code and docs were written with it, under my direction.
 [*]New mod, not everything is tested yet. If something looks off, leave a comment here or open an issue on GitHub; the [Cutscene Skip] lines from Binaries\Win32\Plugins\unrealsdk.log are the most useful thing to include. Pre-Sequel reports are especially welcome.
 [/list]
 ```
